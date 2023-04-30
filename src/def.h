@@ -15,8 +15,10 @@ typedef int_fast64_t    I64;
 typedef int_fast32_t    I32;
 typedef void *          Ptr;
 typedef void (* Swap)   (void *, void *);
-typedef void (* Set)    (void *, I32, const void *);
-typedef I32  (* Cmp)    (const void *, const void *);
-typedef I32  (* Hash)   (const void *);
+typedef void (* Set)    (void *, const void *);
+typedef I64  (* Cmp)    (const void *, const void *);
+typedef I64  (* Hash)   (const void *);
+
+
 
 #endif
