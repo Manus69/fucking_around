@@ -3,6 +3,10 @@
 
 #include "def.h"
 
+#include <assert.h>
+
+void mem_vapply(void (*f)(void *), ...);
+
 static inline void * mem_point(const void * ptr, I64 index, I64 item_size)
 {
     return (void *)(ptr + (index * item_size));
@@ -23,12 +27,6 @@ static inline void swap_##type(void * lhs, void * rhs) \
 static inline void set_##type(void * target, const void * src) \
 { (* (type *)target) = * (type *)src; }
 
-mem_set_gen(Ptr)
-mem_swap_gen(Ptr)
-mem_set_gen(U32)
-mem_swap_gen(U32)
-mem_set_gen(I64)
-mem_swap_gen(I64)
 
 static inline void * mem_allocate(I64 size)
 {
@@ -36,7 +34,18 @@ static inline void * mem_allocate(I64 size)
 
     if ((ptr = malloc(size))) return ptr;
 
-    exit(NOT_OK);
+    assert(0);
+    return NULL;
+}
+
+static inline void * mem_zero(I64 size)
+{
+    void * ptr;
+
+    if ((ptr = calloc(size, 1))) return ptr;
+
+    assert(0);
+    return NULL;
 }
 
 static inline void mem_destroy(void * ptr)
@@ -50,7 +59,8 @@ static inline void * mem_reallocate(void * ptr, I64 size)
 
     if ((new_ptr = realloc(ptr, size))) return new_ptr;
 
-    exit(NOT_OK);
+    assert(0);
+    return NULL;
 }
 
 static inline void * mem_extend(void * ptr, I64 current_size, I64 extra_size)

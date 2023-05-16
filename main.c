@@ -1,42 +1,57 @@
-#include "def.h"
 #include "debug.h"
-#include "Arr.h"
-#include "Vec.h"
-#include "Slice.h"
-#include "sort.h"
+#include "./core/def.h"
+#include "./type/I64.h"
+#include "./structure/Block.h"
+#include "./structure/Array.h"
+#include "./structure/Vector.h"
+#include "./type/Str.h"
 
 #include <stdio.h>
+#include <assert.h>
 
-static inline I64 cmp_I64(const void * lhs, const void * rhs)
+void str_test()
 {
-    return * (I64 *) lhs - * (I64 *) rhs;
+    Str x = Str_new("123");
+    Str y = Str_new("");
+
+    I64 n = Str_cmp(& x, & y);
+    debug_I64(& n);
+
+    mem_vapply((void (*)(void *)) Str_destory, & x, & y, NULL);
 }
 
-void vec_int_test(I64 length)
+void array_test(I64 length)
 {
-    Vec v = Vec_new(I64);
-
+    Array a = Array_new(length, I64);
 
     for (I64 k = 0; k < length; k ++)
     {
-        Vec_push(& v, length - k);
+        Array_set(& a, k, length - k);
     }
 
-    // debug_Vec(& v, debug_I64);
+    I64 x = * (I64 *) Array_get(& a, length - 1);
+    debug_I64(& x);
 
-    Slice s = Vec_to_slice(& v);
-    sort_quick(& s, cmp_I64, swap_I64);
-    // sort_insert(& s, cmp_I64, swap_I64);
-
-    debug_I64(Vec_last(& v));
-    // debug_Vec(& v, debug_I64);
-
-    Vec_destroy(& v);
+    Array_destroy(& a);
 }
+
+void vector_test(I64 length)
+{
+    Vector v = Vector_new(I64);
+    for (I64 k = 0; k < length; k ++)
+    {
+        Vector_push(& v, length - k);
+        // I64 x = length - k;
+        // Vector_push_ptr(& v, & x, set_I64);
+    }
+
+    I64 x = deref(I64) Vector_get(& v, length - 1);
+    debug_I64(& x);
+    Vector_destroy(& v);
+}
+
 int main()
 {
-    I64 length = 1 << 20;
-
-
-    vec_int_test(length);
+    // vector_test(1 << 25);
+    str_test();
 }

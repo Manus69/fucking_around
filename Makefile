@@ -1,17 +1,18 @@
 cc = gcc
 flags = -Wall -Wextra -g
-flags_release = -Wall -Wextra -O3 -flto
+flags_release = -Wall -Wextra -O3 -flto -mavx -D NDEBUG
 flags_link = -flto
 main = main.c
 src_dir = ./src
+type_dir = $(src_dir)/type
 obj_dir = ./obj
 exe = a.out
 include_dir = $(src_dir)
-headers = $(wildcard $(src_dir)/*.h)
-src = $(wildcard $(src_dir)/*.c) $(main)
+headers = $(shell find $(src_dir) -name "*.h")
+src = $(shell find $(src_dir) -name "*.c") $(main)
 obj = $(addprefix $(obj_dir)/,$(subst .c,.o,$(notdir $(src))))
 
-VPATH = ./src
+VPATH = ./src ./src/type ./src/structure ./src/core
 
 all: $(dir) $(exe)
 
