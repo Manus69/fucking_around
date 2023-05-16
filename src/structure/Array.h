@@ -21,6 +21,11 @@ static inline I64 Array_size(const Array * array)
     return Block_size(& array->block);
 }
 
+static inline I64 Array_item_size(const Array * array)
+{
+    return array->item_size;
+}
+
 static inline Array Array_new_size(I64 length, I64 item_size)
 {
     return (Array) {Block_new(length * item_size), item_size};

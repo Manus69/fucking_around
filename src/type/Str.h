@@ -47,4 +47,21 @@ static inline I64 Str_cmp(const void * lhs, const void * rhs)
     return strncmp(Str_cstr((const Str *)lhs), Str_cstr((const Str *)rhs), length + 1);
 }
 
+#define Str_get Block_get
+
+static inline char Str_at(const Str * str, I64 index)
+{
+    return deref(char) Str_get(str, index);
+}
+
+static inline I64 Str_find_c(const Str * str, char c)
+{
+    for (I64 index = 0; index < Str_len(str); index ++)
+    {
+        if (Str_at(str, index) == c) return index;
+    }
+
+    return NO_INDEX;
+}
+
 #endif

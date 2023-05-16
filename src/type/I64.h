@@ -3,7 +3,7 @@
 
 #include "../core/mem.h"
 
-mem_set_gen(I64)
+mem_put_gen(I64)
 mem_swap_gen(I64)
 
 static inline I64 I64_cmp(const void * lhs, const void * rhs)

@@ -1,10 +1,11 @@
 #ifndef VECTOR_H
 #define VECTOR_H
 
-#include "Array.h"
 #include "../core/macro.h"
+#include "Array.h"
+#include "Slice.h"
 
-#define VECTOR_CAPACITY (1)
+#define VECTOR_CAPACITY (1 << 5)
 
 typedef struct Vector Vector;
 
@@ -17,6 +18,11 @@ struct Vector
 static inline I64 Vector_len(const Vector * vector)
 {
     return vector->index;
+}
+
+static inline I64 Vector_item_size(const Vector * vector)
+{
+    return Array_item_size(& vector->array);
 }
 
 static inline I64 Vector_capacity(const Vector * vector)
@@ -85,6 +91,16 @@ static inline void Vector_push_ptr(Vector * vector, const void * item, Put put)
     Vector_check_reserve(vector_ptr); \
     Vector_set((vector_ptr), (vector_ptr)->index, (value)); \
     (vector_ptr)->index ++; \
+}
+
+static inline Slice Vector_slice(const Vector * vector, I64 start, I64 length)
+{
+    return Slice_new(Vector_get(vector, start), length, Vector_item_size(vector));
+}
+
+static inline Slice Vector_to_slice(const Vector * vector)
+{
+    return Vector_slice(vector, 0, Vector_len(vector));
 }
 
 #endif

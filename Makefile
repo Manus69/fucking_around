@@ -12,7 +12,7 @@ headers = $(shell find $(src_dir) -name "*.h")
 src = $(shell find $(src_dir) -name "*.c") $(main)
 obj = $(addprefix $(obj_dir)/,$(subst .c,.o,$(notdir $(src))))
 
-VPATH = ./src ./src/type ./src/structure ./src/core
+VPATH = ./src ./src/type ./src/structure ./src/core ./src/alg
 
 all: $(dir) $(exe)
 

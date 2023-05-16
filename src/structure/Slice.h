@@ -3,6 +3,7 @@
 
 #include "../core/def.h"
 #include "../core/macro.h"
+#include "../core/mem.h"
 
 typedef struct Slice Slice;
 
@@ -54,6 +55,46 @@ static inline void Slice_shift(Slice * slice, I64 n_items)
 static inline void Slice_shrink(Slice * slice, I64 n_items)
 {
     slice->end -= n_items * slice->item_size;
+}
+
+static inline Slice Slice_slice(const Slice * slice, I64 index, I64 length)
+{
+    return Slice_new(slice->start + index * slice->item_size, length, slice->item_size);
+}
+
+static inline Slice Slice_slice_to_end(const Slice * slice, I64 index)
+{
+    return Slice_slice(slice, index, Slice_len(slice) - index);
+}
+
+static inline Slice Slice_chop(Slice * slice, I64 index, I64 length)
+{
+    Slice new_slice;
+
+    new_slice = Slice_slice(slice, index, length);
+    Slice_shift(slice, length);
+
+    return new_slice;
+}
+
+static inline Slice Slice_chop_to_end(Slice * slice, I64 index)
+{
+    return Slice_chop(slice, index, Slice_len(slice));
+}
+
+static inline void Slice_apply(Slice * slice, F f)
+{
+    mem_apply_mut(slice->start, Slice_len(slice), slice->item_size, f);
+}
+
+static inline void * Slice_first(const Slice * slice)
+{
+    return slice->start;
+}
+
+static inline void * Slice_last(const Slice * slice)
+{
+    return Slice_get(slice, Slice_len(slice) - 1);
 }
 
 #endif

@@ -3,6 +3,7 @@
 
 #include "./core/mem.h"
 #include "./core/def.h"
+#include "./structure/Slice.h"
 
 #include <stdio.h>
 
@@ -34,5 +35,11 @@ static inline void debug_cstr(const void * cstr)
 }
 
 #define debug_mem(ptr, n_items, f, type) mem_apply(ptr, n_items, sizeof(type), f)
+
+static inline void debug_Slice(const void * slice, void (* f)(const void *))
+{
+    Slice_apply((Slice *)slice, (F) f);
+    debug_nl();
+}
 
 #endif

@@ -3,7 +3,7 @@
 
 #include "../core/mem.h"
 
-mem_set_gen(Ptr)
+mem_put_gen(Ptr)
 mem_swap_gen(Ptr)
 
 #endif

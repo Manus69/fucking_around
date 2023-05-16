@@ -20,12 +20,12 @@ static inline void * mem_point(const void * ptr, I64 index, I64 item_size)
 } \
 
 #define mem_swap_gen(type) \
-static inline void swap_##type(void * lhs, void * rhs) \
+static inline void type##_swap(void * lhs, void * rhs) \
 { mem_swap((type *)lhs, (type *)rhs); }
 
-#define mem_set_gen(type) \
-static inline void set_##type(void * target, const void * src) \
-{ (* (type *)target) = * (type *)src; }
+#define mem_put_gen(type) \
+static inline void type##_put(void * target, const void * src) \
+{ deref(type) target = deref(type) src; }
 
 
 static inline void * mem_allocate(I64 size)

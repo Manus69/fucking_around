@@ -4,7 +4,9 @@
 #include "./structure/Block.h"
 #include "./structure/Array.h"
 #include "./structure/Vector.h"
+#include "./structure/Slice.h"
 #include "./type/Str.h"
+#include "./alg/sort.h"
 
 #include <stdio.h>
 #include <assert.h>
@@ -47,11 +49,32 @@ void vector_test(I64 length)
 
     I64 x = deref(I64) Vector_get(& v, length - 1);
     debug_I64(& x);
+
+    Slice s = Vector_slice(& v, 1, 10);
+    debug_Slice(& s, debug_I64);
+
+    Vector_destroy(& v);
+}
+
+void sort_test(I64 length)
+{
+    Vector v = Vector_new(I64);
+
+    for (I64 k = 0; k < length; k ++)
+    {
+        Vector_push(& v, length - k);
+    }
+
+    Slice s = Vector_to_slice(& v);
+    sort(& s, I64);
+    // debug_Slice(& s, debug_I64);
+    debug_I64(Slice_last(& s));
+
     Vector_destroy(& v);
 }
 
 int main()
 {
     // vector_test(1 << 25);
-    str_test();
+    sort_test(1 << 25);
 }
