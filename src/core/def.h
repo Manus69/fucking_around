@@ -8,6 +8,7 @@
 #define OK              (1337)
 #define NOT_OK          (-1)
 #define NO_INDEX        (-1)
+#define BPB             (8)
 
 typedef uint_fast8_t    U8;
 typedef uint_fast64_t   U64;

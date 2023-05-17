@@ -66,12 +66,7 @@ static inline char * Str_cstr(const Str * str)
 
 static inline I64 Str_cmp(const void * lhs, const void * rhs)
 {
-    // return strcmp(Str_cstr((const Str *)lhs), Str_cstr((const Str *)rhs));
-    I64 length;
-
-    length = min(Str_len((const Str *)lhs), Str_len((const Str *)rhs));
-
-    return strncmp(Str_cstr((const Str *)lhs), Str_cstr((const Str *)rhs), length + 1);
+    return strcmp(Str_cstr((const Str *)lhs), Str_cstr((const Str *)rhs));
 }
 
 static inline void * Str_get(const Str * str, I64 index)
@@ -82,6 +77,11 @@ static inline void * Str_get(const Str * str, I64 index)
 static inline char Str_at(const Str * str, I64 index)
 {
     return deref(char) Str_get(str, index);
+}
+
+static inline void Str_set(Str * str, I64 index, char c)
+{
+    deref (char) Str_get(str, index) = c;
 }
 
 static inline Slice Str_slice(const Str * str, I64 index, I64 length)
@@ -103,6 +103,24 @@ static inline I64 Str_find_c(const Str * str, char c)
     slice = Str_to_slice(str);
 
     return Slice_find_char(& slice, c);
+}
+
+static inline void Str_append_cstr_len(Str * str, const char * cstr, I64 length)
+{
+    Block_extend(str, length);
+    memcpy(str->data + Str_len(str), cstr, length);
+    str->size += length;
+    Str_set(str, Str_len(str), 0);
+}
+
+static inline void Str_append_cstr(Str * str, const char * cstr)
+{
+    return Str_append_cstr_len(str, cstr, strlen(cstr));
+}
+
+static inline void Str_append(Str * lhs, const Str * rhs)
+{
+    return Str_append_cstr_len(lhs, Str_cstr(rhs), Str_len(rhs));
 }
 
 Slice   Str_split_next(Slice * str_slice, char c);

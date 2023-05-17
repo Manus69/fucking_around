@@ -6,7 +6,8 @@
 #define unlikely(x) (__builtin_expect((x), 0))
 #define log2(n)     ((unsigned) (8 * sizeof (unsigned long long) - __builtin_clzll((n)) - 1))
 #define is_pow_2(n) (__builtin_popcount((n)) == 1)
-#define min(x, y)   ((x) < (y) ? (x) : (y))
+// #define min(x, y)   ((x) < (y) ? (x) : (y))
+#define min(x, y)   ({__auto_type _x = (x); __auto_type _y = (y); _x < _y ? _x : _y;})
 #define max(x, y)   ((x) > (y) ? (x) : (y))
 
 #endif

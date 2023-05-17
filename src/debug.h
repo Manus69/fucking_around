@@ -62,6 +62,16 @@ static inline void debug_Str(const void * str)
     debug_cstr(& cstr);
 }
 
+static inline void debug_BitField(const void * field)
+{
+    Str str;
+
+    str = BitField_to_Str(field);
+    debug_Str(& str);
+
+    Str_destory(& str);
+}
+
 #define debug_structure_gen(structure, type) \
 static inline void debug##_##structure##_##type(const void * structure) \
 { \

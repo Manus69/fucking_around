@@ -77,7 +77,8 @@ void sort_test_str()
 
     sort(& slice, Str);
 
-    debug_Vector(& lines, debug_Str);
+    // debug_Vector(& lines, debug_Str);
+    debug_Str(Vector_last(& lines));
 
     Vector_wipe(& lines, (F) Str_destory);
 }
@@ -95,12 +96,22 @@ void file_test()
     Str_destory(& s);
 }
 
+void bf_test()
+{
+    BitField f = BitField_new(3);
+
+    debug_BitField(& f);
+
+    BitField_destroy(& f);
+}
+
 int main()
 {
     // vector_test(1 << 25);
     // sort_test(1 << 25);
     // str_test();
     // file_test();
+    // sort_test_str();
 
-    sort_test_str();
+    bf_test();
 }

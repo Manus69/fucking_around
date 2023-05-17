@@ -31,6 +31,11 @@ static inline Array Array_new_size(I64 length, I64 item_size)
     return (Array) {Block_new(length * item_size), item_size};
 }
 
+static inline Array Array_zero(I64 length, I64 item_size)
+{
+    return (Array) {Block_zero(length * item_size), item_size};
+}
+
 #define Array_new(length, type) Array_new_size(length, sizeof(type))
 
 static inline void Array_destroy(Array * array)
