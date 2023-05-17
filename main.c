@@ -1,12 +1,9 @@
 #include "debug.h"
 #include "./core/def.h"
-#include "./type/I64.h"
-#include "./structure/Block.h"
-#include "./structure/Array.h"
-#include "./structure/Vector.h"
-#include "./structure/Slice.h"
-#include "./type/Str.h"
+#include "./type/type.h"
+#include "./structure/structure.h"
 #include "./alg/sort.h"
+#include "./io/file.h"
 
 #include <stdio.h>
 #include <assert.h>
@@ -32,7 +29,7 @@ void array_test(I64 length)
         Array_set(& a, k, length - k);
     }
 
-    I64 x = * (I64 *) Array_get(& a, length - 1);
+    I64 x = deref(I64) Array_get(& a, length - 1);
     debug_I64(& x);
 
     Array_destroy(& a);
@@ -44,8 +41,6 @@ void vector_test(I64 length)
     for (I64 k = 0; k < length; k ++)
     {
         Vector_push(& v, length - k);
-        // I64 x = length - k;
-        // Vector_push_ptr(& v, & x, set_I64);
     }
 
     I64 x = deref(I64) Vector_get(& v, length - 1);
@@ -73,13 +68,39 @@ void sort_test(I64 length)
 
     Vector_destroy(& v);
 }
+#define FILE "test_file.txt"
 
-struct t {int x; float y;};
+void sort_test_str()
+{
+    Vector lines = file_to_lines(FILE);
+    Slice slice = Vector_to_slice(& lines);
+
+    sort(& slice, Str);
+
+    debug_Vector(& lines, debug_Str);
+
+    Vector_wipe(& lines, (F) Str_destory);
+}
+
+void file_test()
+{
+    Str s = file_to_Str(FILE);
+
+    // debug_Str(& s);
+
+    Vector split = Str_split(& s, '\n');
+    debug_Vector(& split, debug_Slice_char);
+
+    Vector_destroy(& split);
+    Str_destory(& s);
+}
 
 int main()
 {
     // vector_test(1 << 25);
     // sort_test(1 << 25);
+    // str_test();
+    // file_test();
 
-    str_test();
+    sort_test_str();
 }

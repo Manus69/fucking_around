@@ -32,6 +32,28 @@ static inline Str Str_empty(void)
     return Str_zero(0);
 }
 
+static inline Str Str_buffer(I64 length)
+{
+    Block block;
+
+    block = Block_new(length + 1);
+    Block_set(& block, length, (char) 0);
+
+    return block;
+}
+
+static inline Str Str_from_slice(const Slice * slice)
+{
+    Str str;
+    I64 length;
+
+    length = Slice_len(slice);
+    str = Str_buffer(length);
+    memcpy(Block_data(& str), Slice_first(slice), length);
+
+    return str;
+}
+
 static inline void Str_destory(Str * str)
 {
     Block_destroy(str);

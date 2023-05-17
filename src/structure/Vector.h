@@ -112,4 +112,15 @@ static inline void Vector_apply(Vector * vector, F f)
     return Slice_apply(& slice, f);
 }
 
+static inline void Vector_destroy_items(Vector * vector, F f)
+{
+    Vector_apply(vector, f);
+}
+
+static inline void Vector_wipe(Vector * vector, F f)
+{
+    Vector_destroy_items(vector, f);
+    Vector_destroy(vector);
+}
+
 #endif

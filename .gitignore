@@ -4,4 +4,4 @@
 *.cpp
 obj/
 *.txt
-
+.vscode/

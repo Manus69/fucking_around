@@ -3,12 +3,12 @@
 
 #include "./core/mem.h"
 #include "./core/def.h"
-#include "./structure/Slice.h"
-#include "./structure/Vector.h"
+#include "./structure/structure.h"
+#include "./type/type.h"
 
 #include <stdio.h>
 
-#define _debug(ptr, type, format) printf(format, * (type *)ptr)
+#define _debug(ptr, type, format) printf(format, deref(type) ptr)
 
 static inline void debug_nl()
 {
@@ -54,11 +54,18 @@ static inline void debug_Vector(const void * vector, void (* f)(const void *))
     debug_nl();
 }
 
+static inline void debug_Str(const void * str)
+{
+    char * cstr;
+
+    cstr = Str_cstr(str);
+    debug_cstr(& cstr);
+}
+
 #define debug_structure_gen(structure, type) \
 static inline void debug##_##structure##_##type(const void * structure) \
 { \
     debug_##structure(structure, debug_##type); \
-    debug_nl(); \
 }
 
 debug_structure_gen(Slice, char)
