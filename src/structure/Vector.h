@@ -103,4 +103,13 @@ static inline Slice Vector_to_slice(const Vector * vector)
     return Vector_slice(vector, 0, Vector_len(vector));
 }
 
+static inline void Vector_apply(Vector * vector, F f)
+{
+    Slice slice;
+
+    slice = Vector_to_slice(vector);
+
+    return Slice_apply(& slice, f);
+}
+
 #endif

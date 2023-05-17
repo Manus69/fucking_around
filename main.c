@@ -13,13 +13,14 @@
 
 void str_test()
 {
-    Str x = Str_new("123");
-    Str y = Str_new("");
+    Str s = Str_new("eat a bag of dicks!\n");
 
-    I64 n = Str_cmp(& x, & y);
-    debug_I64(& n);
+    Vector v = Str_split(& s, ' ');
 
-    mem_vapply((void (*)(void *)) Str_destory, & x, & y, NULL);
+    debug_Vector(& v, debug_Slice_char);
+
+    Vector_destroy(& v);
+    Str_destory(& s);
 }
 
 void array_test(I64 length)
@@ -73,8 +74,12 @@ void sort_test(I64 length)
     Vector_destroy(& v);
 }
 
+struct t {int x; float y;};
+
 int main()
 {
     // vector_test(1 << 25);
-    sort_test(1 << 25);
+    // sort_test(1 << 25);
+
+    str_test();
 }

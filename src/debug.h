@@ -4,6 +4,7 @@
 #include "./core/mem.h"
 #include "./core/def.h"
 #include "./structure/Slice.h"
+#include "./structure/Vector.h"
 
 #include <stdio.h>
 
@@ -12,6 +13,11 @@
 static inline void debug_nl()
 {
     printf("\n");
+}
+
+static inline void debug_char(const void * ptr)
+{
+    _debug(ptr, char, "%c");
 }
 
 static inline void debug_I32(const void * ptr)
@@ -41,5 +47,20 @@ static inline void debug_Slice(const void * slice, void (* f)(const void *))
     Slice_apply((Slice *)slice, (F) f);
     debug_nl();
 }
+
+static inline void debug_Vector(const void * vector, void (* f)(const void *))
+{
+    Vector_apply((Vector *)vector, (F) f);
+    debug_nl();
+}
+
+#define debug_structure_gen(structure, type) \
+static inline void debug##_##structure##_##type(const void * structure) \
+{ \
+    debug_##structure(structure, debug_##type); \
+    debug_nl(); \
+}
+
+debug_structure_gen(Slice, char)
 
 #endif

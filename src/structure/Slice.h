@@ -14,6 +14,9 @@ struct Slice
     I64     item_size;
 };
 
+mem_put_gen(Slice)
+mem_swap_gen(Slice)
+
 static inline Slice Slice_new(const void * data, I64 length, I64 item_size)
 {
     return (Slice) {(void *)data, (void *)data + length * item_size, item_size};
@@ -34,7 +37,7 @@ static inline bool Slice_empty(const Slice * slice)
     return Slice_size(slice) == 0;
 }
 
-static inline void * Slice_get(const Slice * slice, I64 index)
+static inline void * Slice_get(const Slice * slice, I64 index) 
 {
     return slice->start + index * slice->item_size;
 }
@@ -95,6 +98,20 @@ static inline void * Slice_first(const Slice * slice)
 static inline void * Slice_last(const Slice * slice)
 {
     return Slice_get(slice, Slice_len(slice) - 1);
+}
+
+#define Slice_find_gen(type) \
+static inline I64 Slice_find_##type(const Slice * slice, type item) \
+{ \
+    I64 length; \
+ \
+    length = Slice_len(slice); \
+    for (I64 index = 0; index < length; index ++) \
+    { \
+        if ((deref(type) Slice_get(slice, index)) == item) return index; \
+    } \
+ \
+    return NO_INDEX; \
 }
 
 #endif

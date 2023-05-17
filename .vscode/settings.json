@@ -4,6 +4,7 @@
         "variant": "c",
         "sort.h": "c",
         "debug.h": "c",
-        "cstring": "cpp"
+        "cstring": "cpp",
+        "str.h": "c"
     }
 }
